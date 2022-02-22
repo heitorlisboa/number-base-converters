@@ -32,8 +32,12 @@ class TestNumberBaseConverter:
         with pytest.raises(ValueError, match=r"2[\w\s]*36"):
             convert_number_base("1", to_base=1)
 
-    def test_When_NumberIsNegative_Expect_ReturnNegativeNumber(self):
-        converted_number = convert_number_base("-1")
+    def test_When_BaseTo10NumberIsNegative_Expect_ReturnNegativeNumber(self):
+        converted_number = convert_number_base("-1", to_base=10)
+        assert converted_number.startswith("-")
+
+    def test_When_BaseTo16NumberIsNegative_Expect_ReturnNegativeNumber(self):
+        converted_number = convert_number_base("-1", to_base=16)
         assert converted_number.startswith("-")
 
     def test_When_BinaryToDecimal_Expect_CorrectConversion(self):
@@ -46,4 +50,10 @@ class TestNumberBaseConverter:
         number = "18"
         expected_conversion = "10010"
         converted_number = convert_number_base(number, 10, 2)
+        assert converted_number == expected_conversion
+
+    def test_When_UppercaseLetter_Expect_CorrectConversion(self):
+        number = "10F"
+        expected_conversion = "271"
+        converted_number = convert_number_base(number, 16)
         assert converted_number == expected_conversion
