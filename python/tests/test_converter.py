@@ -13,7 +13,7 @@ class TestNumberBaseConverter:
 
     def test_When_NumberNotCorrespondingBase_Expect_ValueError(self):
         base = 10
-        with pytest.raises(ValueError, match=fr"can't|isn't | not[\w\s]*base {base}"):
+        with pytest.raises(ValueError, match=fr"(can't|isn't|not)[\w\s]*base {base}"):
             convert_number_base("ff", base)
 
     def test_When_BaseFromGreaterThanMax_Expect_ValueError(self):
