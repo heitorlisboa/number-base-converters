@@ -9,6 +9,13 @@ def validate_number(number: str) -> bool:
     return False if match == None else True
 
 
+def validate_single_digit_number(number: str) -> bool:
+    regex = r"^[a-z0-9]{1}$"
+    match = re.match(regex, number)
+
+    return False if match == None else True
+
+
 def validate_number_base(number: str, base: int) -> bool:
     if 11 <= base <= 36:
         biggest_number = ascii_lowercase[base - 11]
@@ -28,6 +35,8 @@ def validate_number_base(number: str, base: int) -> bool:
 def convert_string_numeric_value(character: str) -> int:
     if len(character) != 1:
         raise ValueError("Insert only 1 character")
+    if not validate_single_digit_number(character):
+        raise ValueError(f"{character} is not a valid number")
     try:
         int(character)
     except:
