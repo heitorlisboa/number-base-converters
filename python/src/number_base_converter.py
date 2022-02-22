@@ -27,8 +27,7 @@ def validate_number_base(number: str, base: int) -> bool:
 
 def convert_string_numeric_value(character: str) -> int:
     if len(character) != 1:
-        raise ValueError("Insert only 1 letter")
-
+        raise ValueError("Insert only 1 character")
     try:
         int(character)
     except:
@@ -46,7 +45,7 @@ def convert_string_numeric_value(character: str) -> int:
         return numeric_value
 
 
-def convert_number_to_1_digit_string(number: int) -> str:
+def convert_number_to_single_digit_string(number: int) -> str:
     # Since numbers bigger than 9 will be represented as a letter, and the
     # alphabet only has 26 letters, the number needs to be between 10 (which
     # represents the letter "a") and 10 + the 25 remaining alphabet characters
@@ -81,11 +80,11 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
         is_negative = False
 
     base_10_conversion: int = 0
-    index_count: int = 0
+    number_position: int = 0
     for digit in number[::-1]:
         isolated_digit_value = convert_string_numeric_value(digit)
-        base_10_conversion += isolated_digit_value * from_base ** index_count
-        index_count += 1
+        base_10_conversion += isolated_digit_value * from_base ** number_position
+        number_position += 1
 
     # If the base to convert to is 10, we can return it right away, since the
     # number was already converted to base 10
@@ -97,7 +96,7 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
     division_remainders: str = ""
     while division_quotient != 0:
         division_remainder = division_quotient % to_base
-        division_remainders += convert_number_to_1_digit_string(
+        division_remainders += convert_number_to_single_digit_string(
             division_remainder)
         division_quotient = division_quotient // to_base
 
