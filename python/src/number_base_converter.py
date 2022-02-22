@@ -72,6 +72,8 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
     base from the same range
     """
 
+    number = number.lower()
+
     if not validate_number(number):
         raise ValueError(f"\"{number}\" is not a valid number\n"
                          "Hint: Numbers should not start with 0")
@@ -110,4 +112,5 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
         division_quotient = division_quotient // to_base
 
     conversion = division_remainders[::-1]
-    return conversion
+    return conversion if not is_negative \
+        else f"-{conversion}"
