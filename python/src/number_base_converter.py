@@ -2,7 +2,7 @@ import re
 from string import ascii_lowercase
 
 
-def validate_number(number: str):
+def validate_number(number: str) -> bool:
     regex = r"^[-]?[a-zA-Z1-9][a-zA-Z0-9]*$"
     match = re.match(regex, number)
 
@@ -46,7 +46,7 @@ def convert_string_numeric_value(character: str) -> int:
         return numeric_value
 
 
-def convert_number_to_1_digit_string(number: int):
+def convert_number_to_1_digit_string(number: int) -> str:
     # Since numbers bigger than 9 will be represented as a letter, and the
     # alphabet only has 26 letters, the number needs to be between 10 (which
     # represents the letter "a") and 10 + the 25 remaining alphabet characters
