@@ -19,13 +19,13 @@ def test_When_NumberNotCorrespondingBase_Expect_ValueError():
 
 
 def test_When_BaseGreaterThanMax_Expect_ValueError():
-    with pytest.raises(ValueError, match=r"1[\w\s]*36"):
+    with pytest.raises(ValueError, match=r"2[\w\s]*36"):
         convert_number_base("f", 37)
 
 
 def test_When_BaseLessThanMin_Expect_ValueError():
-    with pytest.raises(ValueError, match=r"1[\w\s]*36"):
-        convert_number_base("f", 0)
+    with pytest.raises(ValueError, match=r"2[\w\s]*36"):
+        convert_number_base("f", 1)
 
 
 def test_When_NumberIsNegative_Expect_ReturnNegativeNumber():

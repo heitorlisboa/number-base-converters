@@ -13,10 +13,10 @@ def validate_number_base(number: str, base: int) -> bool:
     valid = True
     if 11 <= base <= 36:
         biggest_number = ascii_lowercase[base - 11]
-    elif 1 <= base <= 10:
+    elif 2 <= base <= 10:
         biggest_number = str(base - 1)
     else:
-        raise ValueError("Only bases between 1 and 36 are accepted")
+        raise ValueError("Only bases between 2 and 36 are accepted")
 
     for digit in number:
         if digit > biggest_number:
@@ -55,12 +55,12 @@ def convert_number_to_string(number: int):
     elif 0 <= number <= 9:
         return str(number)
     else:
-        raise ValueError("Only bases between 1 and 36 are accepted")
+        raise ValueError("Only bases between 2 and 36 are accepted")
 
 
 def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> str:
     """
-    Convert an integer (as a string) from any base between 1 and 36 to another
+    Convert an integer (as a string) from any base between 2 and 36 to another
     base from the same range
     """
 
