@@ -1,0 +1,8 @@
+{
+  "code-runner.executorMap": {
+    "python": "\"$pythonPath\" $fullFileName"
+  },
+  "python.testing.pytestArgs": ["python"],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
+}
