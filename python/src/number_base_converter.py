@@ -47,11 +47,10 @@ def convert_string_numeric_value(character: str) -> int:
     if is_letter:
         letter_index = ascii_lowercase.find(character)
         numeric_value = letter_index + 10
-        return numeric_value
-
     else:
         numeric_value = int(character)
-        return numeric_value
+
+    return numeric_value
 
 
 def convert_number_to_single_digit_string(number: int) -> str:
