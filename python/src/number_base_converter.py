@@ -10,7 +10,6 @@ def validate_number(number: str):
 
 
 def validate_number_base(number: str, base: int) -> bool:
-    valid = True
     if 11 <= base <= 36:
         biggest_number = ascii_lowercase[base - 11]
     elif 2 <= base <= 10:
@@ -18,6 +17,7 @@ def validate_number_base(number: str, base: int) -> bool:
     else:
         raise ValueError("Only bases between 2 and 36 are accepted")
 
+    valid = True
     for digit in number:
         if digit > biggest_number:
             valid = False
@@ -46,7 +46,7 @@ def convert_string_numeric_value(character: str) -> int:
         return numeric_value
 
 
-def convert_number_to_string(number: int):
+def convert_number_to_1_digit_string(number: int):
     # Since numbers bigger than 9 will be represented as a letter, and the
     # alphabet only has 26 letters, the number needs to be between 10 (which
     # represents the letter "a") and 10 + the 25 remaining alphabet characters
@@ -55,7 +55,7 @@ def convert_number_to_string(number: int):
     elif 0 <= number <= 9:
         return str(number)
     else:
-        raise ValueError("Only bases between 2 and 36 are accepted")
+        raise ValueError("Only numbers between 0 and 35 are accepted")
 
 
 def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> str:
@@ -69,6 +69,8 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
                          "Hint: Numbers should not start with 0")
     if not validate_number_base(number, from_base):
         raise ValueError(f"The number {number} can't be base {from_base}")
+    if not 2 <= to_base <= 36:
+        raise ValueError(f"Only bases between 2 and 36 are accepted")
     if from_base == to_base or number == "0":
         return number
 
@@ -95,7 +97,8 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
     division_remainders: str = ""
     while division_quotient != 0:
         division_remainder = division_quotient % to_base
-        division_remainders += convert_number_to_string(division_remainder)
+        division_remainders += convert_number_to_1_digit_string(
+            division_remainder)
         division_quotient = division_quotient // to_base
 
     conversion = division_remainders[::-1]
