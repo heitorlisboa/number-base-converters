@@ -31,13 +31,13 @@ node_modules/
 .pnp.*
 
 # === ELIXIR ===
-/_build
-/cover
-/deps
-/doc
-/.fetch
+_build/
+cover/
+deps/
+doc/
+.fetch/
 erl_crash.dump
 *.ez
 *.beam
-/config/*.secret.exs
+config/*.secret.exs
 .elixir_ls/
