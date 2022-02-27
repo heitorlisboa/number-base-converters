@@ -16,15 +16,15 @@ defmodule NumberBaseConverter do
 
   @spec valid_number_base?(String.t(), 2..36) :: boolean()
   def valid_number_base?(number, base) do
+    if base not in 2..36 do
+      raise ArgumentError, "Only bases between 2 and 36 are accepted"
+    end
+
     biggest_number =
       cond do
         base in 11..36 -> Enum.at(@lower_case_alphabet, base - 11)
         base in 2..10 -> Integer.to_string(base)
       end
-
-    if base not in 2..36 do
-      raise ArgumentError, "Only bases between 2 and 36 are accepted"
-    end
 
     String.graphemes(number)
     |> Enum.map(fn digit ->
