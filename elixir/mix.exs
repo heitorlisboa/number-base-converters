@@ -3,7 +3,7 @@ defmodule ElixirConverter.MixProject do
 
   def project do
     [
-      app: :elixir_converter,
+      app: :number_base_converter,
       version: "0.1.0",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,

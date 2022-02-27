@@ -1,4 +1,4 @@
-defmodule ElixirConverter do
+defmodule NumberBaseConverter do
   @lower_case_alphabet Enum.to_list(?a..?z)
                        |> Enum.map(fn letter_code -> <<letter_code>> end)
 
