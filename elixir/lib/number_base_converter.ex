@@ -155,6 +155,29 @@ defmodule NumberBaseConverter do
 
   def convert_number_base(number, from_base, to_base) do
     validate_convertion(number, from_base, to_base)
-    {_base_10_conversion, _is_negative} = convert_to_base_10(number, from_base)
+    {base_10_conversion, is_negative} = convert_to_base_10(number, from_base)
+    conversion = convert_number_base_loop(base_10_conversion, "", to_base)
+
+    if is_negative do
+      "-#{conversion}"
+    else
+      conversion
+    end
+  end
+
+  @spec convert_number_base_loop(integer(), String.t(), integer()) :: String.t()
+  defp convert_number_base_loop(division_quotient, division_remainders, to_base) do
+    if division_quotient != 0 do
+      division_remainder = rem(division_quotient, to_base)
+
+      division_remainders =
+        division_remainders <>
+          convert_number_to_single_digit_string(division_remainder)
+
+      division_quotient = div(division_quotient, to_base)
+      convert_number_base_loop(division_quotient, division_remainders, to_base)
+    else
+      String.reverse(division_remainders)
+    end
   end
 end
