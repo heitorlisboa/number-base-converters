@@ -27,7 +27,6 @@ defmodule NumberBaseConverter do
       isolated_digit_value = convert_string_numeric_value(digit)
       if isolated_digit_value > max_value, do: :invalid
     end)
-    # TODO: Testar se o valor esta sendo mesmo invertido
     |> then(&(not Enum.member?(&1, :invalid)))
   end
 
@@ -87,9 +86,6 @@ defmodule NumberBaseConverter do
   end
 
   defp validate_convertion(_number, from_base, to_base)
-       # Elixir doesn't make any sense because the next line means "from_base is
-       # not number or to_base is not number" instead of "from_base is not
-       # number or to_base is number"
        when not is_integer(from_base) or not is_integer(to_base) do
     raise ArgumentError, "Bases must be integers"
   end
