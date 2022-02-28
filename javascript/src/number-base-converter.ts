@@ -85,6 +85,8 @@ export default function convertNumberBase(
   toBase: number = 10
 ): string {
   number = number.toLocaleLowerCase();
+  fromBase = Math.round(fromBase);
+  toBase = Math.round(toBase);
 
   let isNegative: boolean;
   if (number[0] === "-") {

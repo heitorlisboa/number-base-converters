@@ -78,6 +78,8 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
     else:
         is_negative = False
 
+    if type(from_base) != int or type(to_base) != int:
+        raise TypeError("Bases must be integers")
     if not validate_number(number):
         raise ValueError(f"\"{number}\" is not a valid number\n"
                          "Hint: Numbers should not start with 0")

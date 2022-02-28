@@ -90,8 +90,8 @@ defmodule NumberBaseConverter do
        # Elixir doesn't make any sense because the next line means "from_base is
        # not number or to_base is not number" instead of "from_base is not
        # number or to_base is number"
-       when not is_number(from_base) or not is_number(to_base) do
-    raise ArgumentError, "Base must be of type number"
+       when not is_integer(from_base) or not is_integer(to_base) do
+    raise ArgumentError, "Bases must be integers"
   end
 
   defp validate_convertion(_number, _from_base, to_base)
