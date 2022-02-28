@@ -84,7 +84,7 @@ export default function convertNumberBase(
   fromBase: number = 2,
   toBase: number = 10
 ): string {
-  number = number.toLocaleLowerCase();
+  number = number.toLowerCase();
   fromBase = Math.round(fromBase);
   toBase = Math.round(toBase);
 
