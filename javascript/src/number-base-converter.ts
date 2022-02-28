@@ -20,19 +20,16 @@ export function validateSingleDigitNumber(number: string): boolean {
 }
 
 export function validateNumberBase(number: string, base: number): boolean {
-  base = Math.round(base);
-  let biggestNumber = "";
-  if (11 <= base && base <= 36) {
-    biggestNumber = lowerCaseAlphabet[base - 11];
-  } else if (2 <= base && base <= 10) {
-    biggestNumber = (base - 1).toString();
-  } else {
+  if (!(2 <= base && base <= 36)) {
     throw RangeError("Only bases between 2 and 36 are accepted");
   }
 
+  const maxValue = base - 1;
+
   let valid = true;
   for (let digit of number) {
-    if (digit > biggestNumber) valid = false;
+    const isolatedDigitValue = convertStringNumericValue(digit);
+    if (isolatedDigitValue > maxValue) valid = false;
   }
 
   return valid;
@@ -89,6 +86,14 @@ export default function convertNumberBase(
 ): string {
   number = number.toLocaleLowerCase();
 
+  let isNegative: boolean;
+  if (number[0] === "-") {
+    number = number.slice(1);
+    isNegative = true;
+  } else {
+    isNegative = false;
+  }
+
   if (!validateNumber(number)) {
     throw new ValueError(
       `"${number}" is not a valid number\n` +
@@ -102,14 +107,6 @@ export default function convertNumberBase(
     throw new RangeError("Only bases between 2 and 36 are accepted");
   }
   if (fromBase === toBase || number === "0") return number;
-
-  let isNegative: boolean;
-  if (number[0] === "-") {
-    number = number.slice(1);
-    isNegative = true;
-  } else {
-    isNegative = false;
-  }
 
   let base10Conversion = 0;
   let numberPosition = 0;

@@ -17,16 +17,15 @@ def validate_single_digit_number(number: str) -> bool:
 
 
 def validate_number_base(number: str, base: int) -> bool:
-    if 11 <= base <= 36:
-        biggest_number = ascii_lowercase[base - 11]
-    elif 2 <= base <= 10:
-        biggest_number = str(base - 1)
-    else:
+    if not (2 <= base <= 36):
         raise ValueError("Only bases between 2 and 36 are accepted")
+
+    max_value = base - 1
 
     valid = True
     for digit in number:
-        if digit > biggest_number:
+        isolated_digit_value = convert_string_numeric_value(digit)
+        if isolated_digit_value > max_value:
             valid = False
 
     return valid
@@ -73,6 +72,12 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
 
     number = number.lower()
 
+    if number[0] == "-":
+        number = number[1:]
+        is_negative = True
+    else:
+        is_negative = False
+
     if not validate_number(number):
         raise ValueError(f"\"{number}\" is not a valid number\n"
                          "Hint: Numbers should not start with 0")
@@ -82,12 +87,6 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
         raise ValueError(f"Only bases between 2 and 36 are accepted")
     if from_base == to_base or number == "0":
         return number
-
-    if number[0] == "-":
-        number = number[1:]
-        is_negative = True
-    else:
-        is_negative = False
 
     base_10_conversion: int = 0
     number_position: int = 0

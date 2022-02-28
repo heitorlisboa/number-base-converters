@@ -20,15 +20,12 @@ defmodule NumberBaseConverter do
       raise ArgumentError, "Only bases between 2 and 36 are accepted"
     end
 
-    biggest_number =
-      cond do
-        base in 11..36 -> Enum.at(@lower_case_alphabet, base - 11)
-        base in 2..10 -> Integer.to_string(base)
-      end
+    max_value = base - 1
 
     String.graphemes(number)
     |> Enum.map(fn digit ->
-      if digit > biggest_number, do: :invalid
+      isolated_digit_value = convert_string_numeric_value(digit)
+      if isolated_digit_value > max_value, do: :invalid
     end)
     # TODO: Testar se o valor esta sendo mesmo invertido
     |> then(&(not Enum.member?(&1, :invalid)))
@@ -67,9 +64,25 @@ defmodule NumberBaseConverter do
     end
   end
 
+  @spec process_number(String.t()) :: {String.t(), boolean()}
+  defp process_number(number) do
+    is_negative = if String.starts_with?(number, "-"), do: true, else: false
+
+    number =
+      if is_negative do
+        ending = String.length(number) - 1
+        String.slice(number, 1..ending)
+      else
+        number
+      end
+      |> String.downcase()
+
+    {number, is_negative}
+  end
+
   @spec validate_convertion(String.t(), integer(), integer()) :: nil
   defp validate_convertion(number, _from_base, _to_base)
-       when is_number(number) do
+       when not is_binary(number) do
     raise ArgumentError, "The number to convert must be of type string"
   end
 
@@ -98,28 +111,9 @@ defmodule NumberBaseConverter do
     end
   end
 
-  @spec convert_to_base_10(String.t(), integer()) :: {integer(), boolean()}
+  @spec convert_to_base_10(String.t(), integer()) :: integer()
   defp convert_to_base_10(number, from_base) do
-    first_digit =
-      String.graphemes(number)
-      |> Enum.at(0)
-
-    is_negative =
-      if first_digit == "-" do
-        true
-      else
-        false
-      end
-
-    number =
-      if is_negative do
-        String.length(number)
-        |> then(&String.slice(number, 1, &1))
-      else
-        number
-      end
-
-    base_10_conversion =
+    _base_10_conversion =
       Utilities.string_to_list(number)
       |> Enum.reverse()
       |> Utilities.add_index_for_each_item()
@@ -128,8 +122,6 @@ defmodule NumberBaseConverter do
         isolated_digit_value * from_base ** index
       end)
       |> Enum.sum()
-
-    {base_10_conversion, is_negative}
   end
 
   @spec convert_number_base(String.t(), integer(), integer()) :: String.t()
@@ -143,8 +135,11 @@ defmodule NumberBaseConverter do
   end
 
   def convert_number_base(number, from_base, 10) do
+    {number, is_negative} = process_number(number)
+
     validate_convertion(number, from_base, 10)
-    {base_10_conversion, is_negative} = convert_to_base_10(number, from_base)
+
+    base_10_conversion = convert_to_base_10(number, from_base)
 
     if is_negative do
       "-#{base_10_conversion}"
@@ -154,8 +149,11 @@ defmodule NumberBaseConverter do
   end
 
   def convert_number_base(number, from_base, to_base) do
+    {number, is_negative} = process_number(number)
+
     validate_convertion(number, from_base, to_base)
-    {base_10_conversion, is_negative} = convert_to_base_10(number, from_base)
+
+    base_10_conversion = convert_to_base_10(number, from_base)
     conversion = convert_number_base_loop(base_10_conversion, "", to_base)
 
     if is_negative do
