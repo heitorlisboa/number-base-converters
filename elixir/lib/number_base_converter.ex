@@ -79,7 +79,7 @@ defmodule NumberBaseConverter do
     {number, is_negative}
   end
 
-  @spec validate_convertion(String.t(), integer(), integer()) :: nil
+  @spec validate_convertion(String.t(), 2..36, 2..36) :: nil
   defp validate_convertion(number, _from_base, _to_base)
        when not is_binary(number) do
     raise ArgumentError, "The number to convert must be of type string"
@@ -107,7 +107,7 @@ defmodule NumberBaseConverter do
     end
   end
 
-  @spec convert_to_base_10(String.t(), integer()) :: integer()
+  @spec convert_to_base_10(String.t(), 2..36) :: integer()
   defp convert_to_base_10(number, from_base) do
     _base_10_conversion =
       Utilities.string_to_list(number)
@@ -120,7 +120,7 @@ defmodule NumberBaseConverter do
       |> Enum.sum()
   end
 
-  @spec convert_number_base(String.t(), integer(), integer()) :: String.t()
+  @spec convert_number_base(String.t(), 2..36, 2..36) :: String.t()
   def convert_number_base(number, from_base \\ 2, to_base \\ 10)
 
   def convert_number_base(number, from_base, to_base)
@@ -159,7 +159,7 @@ defmodule NumberBaseConverter do
     end
   end
 
-  @spec convert_number_base_loop(integer(), String.t(), integer()) :: String.t()
+  @spec convert_number_base_loop(integer(), String.t(), 2..36) :: String.t()
   defp convert_number_base_loop(division_quotient, division_remainders, to_base) do
     if division_quotient != 0 do
       division_remainder = rem(division_quotient, to_base)
