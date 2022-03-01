@@ -77,6 +77,16 @@ defmodule NumberBaseConverterTest do
     assert_raise(ArgumentError, regex, convert_base_to_less_than_min)
   end
 
+  test "should throw ArgumentError when using float as a base" do
+    convert_base_as_float = fn ->
+      convert_number_base("10", 1.2)
+    end
+
+    regex = ~r/base[\w\s]*integer/i
+
+    assert_raise(ArgumentError, regex, convert_base_as_float)
+  end
+
   test "should return a negative number when `base_to` is 10 and the number is negative" do
     converted_number = convert_number_base("-1", 2, 10)
     assert(converted_number == "-1")

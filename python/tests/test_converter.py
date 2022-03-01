@@ -1,5 +1,6 @@
 from python.src.number_base_converter import convert_number_base
 import pytest
+import re
 
 
 class TestNumberBaseConverter:
@@ -31,6 +32,11 @@ class TestNumberBaseConverter:
     def test_When_BaseToLessThanMin_Expect_ValueError(self):
         with pytest.raises(ValueError, match=r"2[\w\s]*36"):
             convert_number_base("1", to_base=1)
+
+    def test_When_BaseIsFloat_Expect_TypeError(self):
+        REGEX = re.compile(r"base[\w\s]*integer", re.I)
+        with pytest.raises(TypeError, match=REGEX):
+            convert_number_base("10", 1.2)
 
     def test_When_BaseTo10NumberIsNegative_Expect_ReturnNegativeNumber(self):
         converted_number = convert_number_base("-1", to_base=10)

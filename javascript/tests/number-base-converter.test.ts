@@ -103,4 +103,11 @@ describe("numberBaseConverter function", () => {
     const convertedNumber = convertNumberBase(number, 16);
     expect(convertedNumber).toEqual(expectedConversion);
   });
+
+  it("should convert to rounded base when using base as a float number", () => {
+    const number = "15";
+    const expectedConversion = "f";
+    const convertedNumber = convertNumberBase(number, 10.2, 15.5);
+    expect(convertedNumber).toEqual(expectedConversion);
+  });
 });
