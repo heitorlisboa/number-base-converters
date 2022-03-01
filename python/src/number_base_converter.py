@@ -68,6 +68,18 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
     """
     Convert an integer (as a string) from any base between 2 and 36 to another
     base from the same range
+
+    Parameters
+    ----------
+    `number` &mdash; Number to convert
+
+    `from_base` &mdash; Number base to convert from (default = 2)
+
+    `to_base` &mdash; Number base to convert to (default = 10)
+
+    Returns
+    -------
+    The converted number
     """
 
     number = number.lower()

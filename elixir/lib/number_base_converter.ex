@@ -120,6 +120,22 @@ defmodule NumberBaseConverter do
       |> Enum.sum()
   end
 
+  @doc """
+  Convert an integer (as a string) from any base between 2 and 36 to another
+  base from the same range
+
+  Parameters
+  ----------
+  `number` &mdash; Number to convert
+
+  `from_base` &mdash; Number base to convert from (default = 2)
+
+  `to_base` &mdash; Number base to convert to (default = 10)
+
+  Returns
+  -------
+  The converted number
+  """
   @spec convert_number_base(String.t(), 2..36, 2..36) :: String.t()
   def convert_number_base(number, from_base \\ 2, to_base \\ 10)
 
