@@ -1,5 +1,6 @@
 import ValueError from "./errors/value-error";
 import { reverseString, integerDivision } from "./utils";
+import type { integer } from "./types";
 
 const lowerCaseAlphabet = Array.from(Array(26)).map((_, i) =>
   String.fromCharCode(i + 97)
@@ -81,8 +82,8 @@ export function convertNumberToSingleDigitString(number: number): string {
  */
 export default function convertNumberBase(
   number: string,
-  fromBase: number = 2,
-  toBase: number = 10
+  fromBase: integer = 2,
+  toBase: integer = 10
 ): string {
   // Type validations
   if (typeof number !== "string") {
@@ -90,6 +91,9 @@ export default function convertNumberBase(
   }
   if (typeof fromBase !== "number" || typeof toBase !== "number") {
     throw new TypeError("Bases must be of type number");
+  }
+  if (!Number.isInteger(fromBase) || !Number.isInteger(toBase)) {
+    throw new ValueError("Bases must be integers");
   }
 
   // Processing parameters

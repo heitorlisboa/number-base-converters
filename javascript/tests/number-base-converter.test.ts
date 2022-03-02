@@ -55,6 +55,17 @@ describe("numberBaseConverter function", () => {
     expect(convertNumberNotAsString).toThrow(TypeError);
   });
 
+  it("should throw ValueError when not using base as an integer", () => {
+    function convertBaseNotAsInteger() {
+      convertNumberBase("10", 1.2);
+    }
+
+    const regex = /base[\w\s]*integer/i;
+
+    expect(convertBaseNotAsInteger).toThrow(regex);
+    expect(convertBaseNotAsInteger).toThrow(ValueError);
+  });
+
   it("should throw RangeError when baseFrom is greater than max", () => {
     function convertBaseFromGreaterThanMax() {
       convertNumberBase("f", 37);
@@ -123,13 +134,6 @@ describe("numberBaseConverter function", () => {
     const number = "10F";
     const expectedConversion = "271";
     const convertedNumber = convertNumberBase(number, 16);
-    expect(convertedNumber).toEqual(expectedConversion);
-  });
-
-  it("should convert to rounded base when using base as a float number", () => {
-    const number = "15";
-    const expectedConversion = "f";
-    const convertedNumber = convertNumberBase(number, 10.2, 15.5);
     expect(convertedNumber).toEqual(expectedConversion);
   });
 });
