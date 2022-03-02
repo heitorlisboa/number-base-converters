@@ -84,6 +84,15 @@ export default function convertNumberBase(
   fromBase: number = 2,
   toBase: number = 10
 ): string {
+  // Type validations
+  if (typeof number !== "string") {
+    throw new TypeError("The number to convert must be of type string");
+  }
+  if (typeof fromBase !== "number" || typeof toBase !== "number") {
+    throw new TypeError("Bases must be of type number");
+  }
+
+  // Processing parameters
   number = number.toLowerCase();
   fromBase = Math.round(fromBase);
   toBase = Math.round(toBase);
@@ -96,6 +105,7 @@ export default function convertNumberBase(
     isNegative = false;
   }
 
+  // Value validations
   if (!validateNumber(number)) {
     throw new ValueError(
       `"${number}" is not a valid number\n` +
@@ -108,6 +118,7 @@ export default function convertNumberBase(
   if (!(2 <= toBase && toBase <= 36)) {
     throw new RangeError("Only bases between 2 and 36 are accepted");
   }
+
   if (fromBase === toBase || number === "0") return number;
 
   let base10Conversion = 0;

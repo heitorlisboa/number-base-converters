@@ -37,14 +37,24 @@ defmodule NumberBaseConverterTest do
     assert_raise(ArgumentError, regex, convert_number_not_corresponding_base)
   end
 
-  test "should throw ArgumentError when using float as a base" do
-    convert_base_as_float = fn ->
+  test "should throw ArgumentError when not using number as a string" do
+    convert_number_not_as_string = fn ->
+      convert_number_base(10)
+    end
+
+    regex = ~r/number[\w\s]*string/i
+
+    assert_raise(ArgumentError, regex, convert_number_not_as_string)
+  end
+
+  test "should throw ArgumentError when not using base as an integer" do
+    convert_base_not_as_integer = fn ->
       convert_number_base("10", 1.2)
     end
 
     regex = ~r/base[\w\s]*integer/i
 
-    assert_raise(ArgumentError, regex, convert_base_as_float)
+    assert_raise(ArgumentError, regex, convert_base_not_as_integer)
   end
 
   test "should throw `ArgumentError` when `base_from` is greater than max" do

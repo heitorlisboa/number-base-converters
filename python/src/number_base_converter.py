@@ -82,6 +82,13 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
     The converted number
     """
 
+    # Type validations
+    if type(number) != str:
+        raise TypeError("The number to convert must be of type string")
+    if type(from_base) != int or type(to_base) != int:
+        raise TypeError("Bases must be of type integer")
+
+    # Number processing
     number = number.lower()
 
     if number[0] == "-":
@@ -90,8 +97,7 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
     else:
         is_negative = False
 
-    if type(from_base) != int or type(to_base) != int:
-        raise TypeError("Bases must be integers")
+    # Value validations
     if not validate_number(number):
         raise ValueError(f"\"{number}\" is not a valid number\n"
                          "Hint: Numbers should not start with 0")
@@ -99,6 +105,7 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
         raise ValueError(f"The number {number} can't be base {from_base}")
     if not 2 <= to_base <= 36:
         raise ValueError(f"Only bases between 2 and 36 are accepted")
+
     if from_base == to_base or number == "0":
         return number
 

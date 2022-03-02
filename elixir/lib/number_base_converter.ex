@@ -80,16 +80,6 @@ defmodule NumberBaseConverter do
   end
 
   @spec validate_convertion(String.t(), 2..36, 2..36) :: nil
-  defp validate_convertion(number, _from_base, _to_base)
-       when not is_binary(number) do
-    raise ArgumentError, "The number to convert must be of type string"
-  end
-
-  defp validate_convertion(_number, from_base, to_base)
-       when not is_integer(from_base) or not is_integer(to_base) do
-    raise ArgumentError, "Bases must be integers"
-  end
-
   defp validate_convertion(_number, _from_base, to_base)
        when to_base not in 2..36 do
     raise ArgumentError, "Only bases between 2 and 36 are accepted"
@@ -138,6 +128,16 @@ defmodule NumberBaseConverter do
   """
   @spec convert_number_base(String.t(), 2..36, 2..36) :: String.t()
   def convert_number_base(number, from_base \\ 2, to_base \\ 10)
+
+  def convert_number_base(number, _from_base, _to_base)
+      when not is_binary(number) do
+    raise ArgumentError, "The number to convert must be of type string"
+  end
+
+  def convert_number_base(_number, from_base, to_base)
+      when not is_integer(from_base) or not is_integer(to_base) do
+    raise ArgumentError, "Bases must be of type integer"
+  end
 
   def convert_number_base(number, from_base, to_base)
       when from_base == to_base or number == 0 do

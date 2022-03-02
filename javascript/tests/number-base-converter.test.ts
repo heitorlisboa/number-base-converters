@@ -33,6 +33,28 @@ describe("numberBaseConverter function", () => {
     expect(convertNumberNotCorrespondingBase).toThrow(ValueError);
   });
 
+  it("should throw TypeError when not using number as a string", () => {
+    function convertNumberNotAsString() {
+      convertNumberBase(10 as any);
+    }
+
+    const regex = /number[\w\s]*string/i;
+
+    expect(convertNumberNotAsString).toThrow(regex);
+    expect(convertNumberNotAsString).toThrow(TypeError);
+  });
+
+  it("should throw TypeError when not using base as a number", () => {
+    function convertNumberNotAsString() {
+      convertNumberBase("10", "1" as any);
+    }
+
+    const regex = /base[\w\s]*number/i;
+
+    expect(convertNumberNotAsString).toThrow(regex);
+    expect(convertNumberNotAsString).toThrow(TypeError);
+  });
+
   it("should throw RangeError when baseFrom is greater than max", () => {
     function convertBaseFromGreaterThanMax() {
       convertNumberBase("f", 37);

@@ -20,7 +20,12 @@ class TestNumberBaseConverter:
         with pytest.raises(ValueError, match=regex):
             convert_number_base("ff", base)
 
-    def test_When_BaseIsFloat_Expect_TypeError(self):
+    def test_When_NumberNotString_Expect_TypeError(self):
+        regex = re.compile(r"number[\w\s]*string", re.I)
+        with pytest.raises(TypeError, match=regex):
+            convert_number_base(10)
+
+    def test_When_BaseNotInteger_Expect_TypeError(self):
         regex = re.compile(r"base[\w\s]*integer", re.I)
         with pytest.raises(TypeError, match=regex):
             convert_number_base("10", 1.2)
