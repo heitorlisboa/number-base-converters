@@ -45,14 +45,14 @@ describe("numberBaseConverter function", () => {
   });
 
   it("should throw TypeError when not using base as a number", () => {
-    function convertNumberNotAsString() {
+    function convertBaseNotAsNumber() {
       convertNumberBase("10", "1" as any);
     }
 
     const regex = /base[\w\s]*number/i;
 
-    expect(convertNumberNotAsString).toThrow(regex);
-    expect(convertNumberNotAsString).toThrow(TypeError);
+    expect(convertBaseNotAsNumber).toThrow(regex);
+    expect(convertBaseNotAsNumber).toThrow(TypeError);
   });
 
   it("should throw ValueError when not using base as an integer", () => {
