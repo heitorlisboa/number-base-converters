@@ -10,7 +10,7 @@ defmodule NumberBaseConverterTest do
       convert_number_base("87.5")
     end
 
-    regex = ~r/not[\w\s]*valid[\w\s]*number/
+    regex = ~r/not[\w\s]*valid[\w\s]*number/i
 
     assert_raise(ArgumentError, regex, convert_invalid_number)
   end
@@ -20,7 +20,7 @@ defmodule NumberBaseConverterTest do
       convert_number_base("-0")
     end
 
-    regex = ~r/not[\w\s]*valid[\w\s]*number/
+    regex = ~r/not[\w\s]*valid[\w\s]*number/i
 
     assert_raise(ArgumentError, regex, convert_zero_as_first_numeric_digit)
   end
@@ -32,9 +32,19 @@ defmodule NumberBaseConverterTest do
       convert_number_base("ff", base)
     end
 
-    regex = ~r/(can't|isn't|not)[\w\s]*base #{base}/
+    regex = ~r/(can't|isn't|not)[\w\s]*base #{base}/i
 
     assert_raise(ArgumentError, regex, convert_number_not_corresponding_base)
+  end
+
+  test "should throw ArgumentError when using float as a base" do
+    convert_base_as_float = fn ->
+      convert_number_base("10", 1.2)
+    end
+
+    regex = ~r/base[\w\s]*integer/i
+
+    assert_raise(ArgumentError, regex, convert_base_as_float)
   end
 
   test "should throw `ArgumentError` when `base_from` is greater than max" do
@@ -75,16 +85,6 @@ defmodule NumberBaseConverterTest do
     regex = ~r/2[\w\s]*36/
 
     assert_raise(ArgumentError, regex, convert_base_to_less_than_min)
-  end
-
-  test "should throw ArgumentError when using float as a base" do
-    convert_base_as_float = fn ->
-      convert_number_base("10", 1.2)
-    end
-
-    regex = ~r/base[\w\s]*integer/i
-
-    assert_raise(ArgumentError, regex, convert_base_as_float)
   end
 
   test "should return a negative number when `base_to` is 10 and the number is negative" do

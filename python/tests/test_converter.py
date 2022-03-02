@@ -5,17 +5,25 @@ import re
 
 class TestNumberBaseConverter:
     def test_When_InvalidNumberCharacter_Expect_ValueError(self):
-        with pytest.raises(ValueError, match=r"not[\w\s]*valid[\w\s]*number"):
+        regex = re.compile(r"not[\w\s]*valid[\w\s]*number", re.I)
+        with pytest.raises(ValueError, match=regex):
             convert_number_base("87.5")
 
     def test_When_FirstNumericDigitIsZero_Expect_ValueError(self):
-        with pytest.raises(ValueError, match=r"not[\w\s]*valid[\w\s]*number"):
+        regex = re.compile(r"not[\w\s]*valid[\w\s]*number", re.I)
+        with pytest.raises(ValueError, match=regex):
             convert_number_base("-0")
 
     def test_When_NumberNotCorrespondingBase_Expect_ValueError(self):
         base = 10
-        with pytest.raises(ValueError, match=fr"(can't|isn't|not)[\w\s]*base {base}"):
+        regex = re.compile(fr"(can't|isn't|not)[\w\s]*base {base}", re.I)
+        with pytest.raises(ValueError, match=regex):
             convert_number_base("ff", base)
+
+    def test_When_BaseIsFloat_Expect_TypeError(self):
+        regex = re.compile(r"base[\w\s]*integer", re.I)
+        with pytest.raises(TypeError, match=regex):
+            convert_number_base("10", 1.2)
 
     def test_When_BaseFromGreaterThanMax_Expect_ValueError(self):
         with pytest.raises(ValueError, match=r"2[\w\s]*36"):
@@ -32,11 +40,6 @@ class TestNumberBaseConverter:
     def test_When_BaseToLessThanMin_Expect_ValueError(self):
         with pytest.raises(ValueError, match=r"2[\w\s]*36"):
             convert_number_base("1", to_base=1)
-
-    def test_When_BaseIsFloat_Expect_TypeError(self):
-        REGEX = re.compile(r"base[\w\s]*integer", re.I)
-        with pytest.raises(TypeError, match=REGEX):
-            convert_number_base("10", 1.2)
 
     def test_When_BaseTo10NumberIsNegative_Expect_ReturnNegativeNumber(self):
         converted_number = convert_number_base("-1", to_base=10)

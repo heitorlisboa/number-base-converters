@@ -6,7 +6,7 @@ describe("numberBaseConverter function", () => {
     function convertInvalidNumber() {
       convertNumberBase("87.5");
     }
-    const regex = /not[\w\s]*valid[\w\s]*number/;
+    const regex = /not[\w\s]*valid[\w\s]*number/i;
 
     expect(convertInvalidNumber).toThrow(regex);
     expect(convertInvalidNumber).toThrow(ValueError);
@@ -16,7 +16,7 @@ describe("numberBaseConverter function", () => {
     function convertZeroAsFirstNumericDigit() {
       convertNumberBase("-0");
     }
-    const regex = /not[\w\s]*valid[\w\s]*number/;
+    const regex = /not[\w\s]*valid[\w\s]*number/i;
 
     expect(convertZeroAsFirstNumericDigit).toThrow(regex);
     expect(convertZeroAsFirstNumericDigit).toThrow(ValueError);
@@ -27,7 +27,7 @@ describe("numberBaseConverter function", () => {
     function convertNumberNotCorrespondingBase() {
       convertNumberBase("ff", base);
     }
-    const regex = new RegExp(`(can't|isn't|not)[\\w\\s]*base ${base}`);
+    const regex = new RegExp(`(can't|isn't|not)[\\w\\s]*base ${base}`, "i");
 
     expect(convertNumberNotCorrespondingBase).toThrow(regex);
     expect(convertNumberNotCorrespondingBase).toThrow(ValueError);
