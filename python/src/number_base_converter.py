@@ -1,5 +1,6 @@
-import re
 from string import ascii_lowercase
+from typing import Tuple
+import re
 
 
 def validate_number(number: str) -> bool:
@@ -64,6 +65,18 @@ def convert_number_to_single_digit_string(number: int) -> str:
         raise ValueError("Only numbers between 0 and 35 are accepted")
 
 
+def _process_number(number: str) -> Tuple[str, bool]:
+    number = number.lower()
+
+    if number[0] == "-":
+        number = number[1:]
+        is_negative = True
+    else:
+        is_negative = False
+
+    return (number, is_negative)
+
+
 def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> str:
     """
     Convert an integer (as a string) from any base between 2 and 36 to another
@@ -89,13 +102,7 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
         raise TypeError("Bases must be of type integer")
 
     # Number processing
-    number = number.lower()
-
-    if number[0] == "-":
-        number = number[1:]
-        is_negative = True
-    else:
-        is_negative = False
+    (number, is_negative) = _process_number(number)
 
     # Value validations
     if not validate_number(number):
@@ -104,11 +111,26 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
     if not validate_number_base(number, from_base):
         raise ValueError(f"The number {number} can't be base {from_base}")
     if not 2 <= to_base <= 36:
-        raise ValueError(f"Only bases between 2 and 36 are accepted")
+        raise ValueError("Only bases between 2 and 36 are accepted")
 
     if from_base == to_base or number == "0":
         return number
 
+    base_10_conversion = _convert_to_base_10(number, from_base) if from_base != 10 \
+        else int(number)
+
+    # If the base to convert to is 10, we can return it right away, since the
+    # number was already converted to base 10
+    if to_base == 10:
+        return f"-{base_10_conversion}" if is_negative \
+            else str(base_10_conversion)
+
+    conversion = _convert_number_base_loop(base_10_conversion, to_base)
+    return conversion if not is_negative \
+        else f"-{conversion}"
+
+
+def _convert_to_base_10(number: str, from_base: int) -> int:
     base_10_conversion: int = 0
     number_position: int = 0
     for digit in number[::-1]:
@@ -116,13 +138,10 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
         base_10_conversion += isolated_digit_value * from_base ** number_position
         number_position += 1
 
-    # If the base to convert to is 10, we can return it right away, since the
-    # number was already converted to base 10
-    if to_base == 10:
-        return str(base_10_conversion) if not is_negative \
-            else f"-{base_10_conversion}"
+    return base_10_conversion
 
-    division_quotient: int = base_10_conversion
+
+def _convert_number_base_loop(division_quotient: int, to_base: int) -> str:
     division_remainders: str = ""
     while division_quotient != 0:
         division_remainder = division_quotient % to_base
@@ -131,5 +150,5 @@ def convert_number_base(number: str, from_base: int = 2, to_base: int = 10) -> s
         division_quotient = division_quotient // to_base
 
     conversion = division_remainders[::-1]
-    return conversion if not is_negative \
-        else f"-{conversion}"
+
+    return conversion

@@ -72,6 +72,19 @@ export function convertNumberToSingleDigitString(number: number): string {
   }
 }
 
+function processNumber(number: string): [string, boolean] {
+  number = number.toLowerCase();
+  let isNegative: boolean;
+  if (number[0] === "-") {
+    number = number.slice(1);
+    isNegative = true;
+  } else {
+    isNegative = false;
+  }
+
+  return [number, isNegative];
+}
+
 /**
  * Convert an integer (as a string) from any base between 2 and 36 to another
  * base from the same range
@@ -97,17 +110,10 @@ export default function convertNumberBase(
   }
 
   // Processing parameters
-  number = number.toLowerCase();
+  let isNegative: boolean;
+  [number, isNegative] = processNumber(number);
   fromBase = Math.round(fromBase);
   toBase = Math.round(toBase);
-
-  let isNegative: boolean;
-  if (number[0] === "-") {
-    number = number.slice(1);
-    isNegative = true;
-  } else {
-    isNegative = false;
-  }
 
   // Value validations
   if (!validateNumber(number)) {
@@ -125,6 +131,19 @@ export default function convertNumberBase(
 
   if (fromBase === toBase || number === "0") return number;
 
+  const base10Conversion =
+    fromBase !== 10 ? convertToBase10(number, fromBase) : parseInt(number);
+
+  if (toBase === 10) {
+    return isNegative ? `-${base10Conversion}` : base10Conversion.toString();
+  }
+
+  const conversion = convertNumberBaseLoop(base10Conversion, toBase);
+
+  return isNegative ? `-${conversion}` : conversion;
+}
+
+function convertToBase10(number: string, fromBase: number): number {
   let base10Conversion = 0;
   let numberPosition = 0;
   for (let digit of reverseString(number)) {
@@ -133,19 +152,17 @@ export default function convertNumberBase(
     numberPosition++;
   }
 
-  if (toBase === 10) {
-    return isNegative ? `-${base10Conversion}` : base10Conversion.toString();
-  }
+  return base10Conversion;
+}
 
-  let divisionQuotient = base10Conversion;
+function convertNumberBaseLoop(divisionQuotient: number, toBase: number) {
   let divisionRemainders = "";
   while (divisionQuotient !== 0) {
     const divisionRemainder = divisionQuotient % toBase;
     divisionRemainders += convertNumberToSingleDigitString(divisionRemainder);
     divisionQuotient = integerDivision(divisionQuotient, toBase);
   }
-
   const conversion = reverseString(divisionRemainders);
 
-  return isNegative ? `-${conversion}` : conversion;
+  return conversion;
 }

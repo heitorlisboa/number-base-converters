@@ -97,31 +97,18 @@ defmodule NumberBaseConverter do
     end
   end
 
-  @spec convert_to_base_10(String.t(), 2..36) :: integer()
-  defp convert_to_base_10(number, from_base) do
-    _base_10_conversion =
-      Utilities.string_to_list(number)
-      |> Enum.reverse()
-      |> Utilities.add_index_for_each_item()
-      |> Enum.map(fn {digit, index} ->
-        isolated_digit_value = convert_string_numeric_value(digit)
-        isolated_digit_value * from_base ** index
-      end)
-      |> Enum.sum()
-  end
-
   @doc """
   Convert an integer (as a string) from any base between 2 and 36 to another
   base from the same range
-
+  
   Parameters
   ----------
   `number` &mdash; Number to convert
-
+  
   `from_base` &mdash; Number base to convert from (default = 2)
-
+  
   `to_base` &mdash; Number base to convert to (default = 10)
-
+  
   Returns
   -------
   The converted number
@@ -144,6 +131,23 @@ defmodule NumberBaseConverter do
     validate_convertion(number, from_base, to_base)
 
     number
+  end
+
+  def convert_number_base(number, 10, to_base) do
+    {number, is_negative} = process_number(number)
+
+    validate_convertion(number, 10, to_base)
+
+    convertion =
+      number
+      |> String.to_integer()
+      |> convert_number_base_loop("", to_base)
+
+    if is_negative do
+      "-#{convertion}"
+    else
+      convertion
+    end
   end
 
   def convert_number_base(number, from_base, 10) do
@@ -173,6 +177,19 @@ defmodule NumberBaseConverter do
     else
       conversion
     end
+  end
+
+  @spec convert_to_base_10(String.t(), 2..36) :: integer()
+  defp convert_to_base_10(number, from_base) do
+    _base_10_conversion =
+      Utilities.string_to_list(number)
+      |> Enum.reverse()
+      |> Utilities.add_index_for_each_item()
+      |> Enum.map(fn {digit, index} ->
+        isolated_digit_value = convert_string_numeric_value(digit)
+        isolated_digit_value * from_base ** index
+      end)
+      |> Enum.sum()
   end
 
   @spec convert_number_base_loop(integer(), String.t(), 2..36) :: String.t()
